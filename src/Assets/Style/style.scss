@@ -1,0 +1,116 @@
+@import "~bootstrap/scss/bootstrap";
+@import './variable.scss';
+
+body {
+	font-family: $font-primary;
+	background: $darken;
+	font-size: 15px;
+	line-height: 1.8;
+	font-weight: 300;
+	color:  $white;
+
+}
+h1, h2, h3, h4, h5,
+.h1, .h2, .h3, .h4, .h5 {
+	line-height: 1.4;
+	font-weight: 400;
+	font-family: $font-secondary;
+}
+.navbar-brand{
+	float: left;
+    margin-left: 2%;
+}
+span{
+	color: lighten($black,75%);
+}
+a {
+	transition: .3s all ease;
+	color: $white;
+	&:hover, &:active, &:focus {
+		color: $primary;
+		outline: none !important;
+		text-decoration: none !important;
+	}
+}
+.text-primary {
+	color: $primary!important;
+}
+
+.App-header{
+	height: 100vh;
+	background: linear-gradient(rgba(33, 30, 30, 0.29), rgba(51, 47, 47, 0.59)), url(../Images/bg_2.jpg) no-repeat center center fixed;
+		background-size: cover;
+	text-align:center;
+	.banner{
+		z-index: 2;
+		padding: 3%;
+		transition: opacity 1.25s ease, transform 1s ease;
+		left: 15%;
+		position: absolute;
+		top: 30%;
+		width: 70%;
+		h3{
+			font-family: "Nothing You Could Do", cursive;
+			padding-bottom: 2rem;
+			text-transform: uppercase;
+			font-size: 40px;
+			color: #fff;
+			line-height: 1.5;
+			font-weight: normal;
+			letter-spacing: 1px;
+		}
+		.btn{
+			margin-bottom: 1rem;
+			border-radius: unset;
+			padding: 1rem;
+		}
+		
+	}
+	.cart-icon{
+		height: 3rem;
+	}
+
+	.badge {
+		border-radius: 50%;
+        padding: 0.4rem 0.5rem !important;
+	  }
+
+	  .cart-count{
+		font-size: 12px;
+		background: #ff0000;
+		color: #fff;
+		vertical-align: top;
+		margin-left: -10px; 
+	  }
+	
+}
+.services{
+	background:url(../Images/food.png) repeat; 
+	color:$black;
+	padding: 5rem 0;
+
+}
+.menu-container{
+	padding-top: 5rem;
+	padding-bottom: 5rem;
+	background:url(../Images/bg_4.jpg) repeat; 
+}
+.card{
+	color: $black;
+	img{
+		height: 17rem;
+	}
+	.card-links{
+		padding:0 2rem;
+		.btn{
+			border-radius: unset;
+			padding: 0.5rem 2rem;
+		}
+		.price-tag{
+			color: $black;
+			font-weight: 200;
+			font-size: large;
+		}
+	}
+	
+}
