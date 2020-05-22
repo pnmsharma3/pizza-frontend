@@ -18,7 +18,7 @@ h1, h2, h3, h4, h5,
 }
 .navbar-brand{
 	float: left;
-    margin-left: 2%;
+	margin-left: 2%;
 }
 span{
 	color: lighten($black,75%);
@@ -82,6 +82,11 @@ a {
 		vertical-align: top;
 		margin-left: -10px; 
 	  }
+	  .navbar{
+		position: fixed;
+		width: 100%;
+		z-index: 9;
+	  }
 	
 }
 .services{
@@ -113,4 +118,7 @@ a {
 		}
 	}
 	
+}
+.modal-content{
+	color: $black;
 }
