@@ -12,7 +12,6 @@ const Menu = (props) => {
         fetchData();
     }, []);
     const setSelectedpizza = (pizza) => {
-        pizza={...pizza,quantity:1}
         setSelectedList([...selectedList, pizza]);
         props.addToCart([...selectedList, pizza]);
     }

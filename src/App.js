@@ -22,6 +22,7 @@ function App() {
   const executeScroll = () => scrollToRef(myRef)
 
   const cartList=(pizzas)=>{
+    pizzas.map(p=>p.quantity=1)
     setSelectedPizza(pizzas);
    } 
   return (
