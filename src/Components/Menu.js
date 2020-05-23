@@ -38,7 +38,7 @@ const Menu = (props) => {
                                         {pizza.description}
                                     </p>
                                     <div className="card-links">
-                                        <span className="price-tag">$ {pizza.price} </span>
+                                        <span className="price-tag">{props.currency === '€' ? pizza.price : (pizza.price * props.exchangeRate).toFixed(2)} {props.currency}</span>
                                         <button className="btn btn-danger float-right" disabled={selectedList.includes(pizza)} onClick={() => setSelectedpizza(pizza)}>
                                             {selectedList.includes(pizza) ? 'Added' : 'Add to cart'}
                                         </button>

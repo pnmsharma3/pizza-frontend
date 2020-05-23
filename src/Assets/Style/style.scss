@@ -122,3 +122,11 @@ a {
 .modal-content{
 	color: $black;
 }
+.btn-link{
+	color: $white;
+	&:hover, &:active, &:focus, &.active{
+		color: $primary;
+		outline: none !important;
+		text-decoration: none !important;
+	}
+}

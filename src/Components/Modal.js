@@ -8,7 +8,7 @@ function CartModal(props) {
         setCartList(props.cartList);
     }, [props.cartList])
     const changeQuantity = (id, value) => {
-       let list= cartList.map(selectedPizza => {
+        let list = cartList.map(selectedPizza => {
             if (selectedPizza.id === id) {
                 selectedPizza.quantity = value
             }
@@ -16,6 +16,11 @@ function CartModal(props) {
         })
         setCartList(list);
 
+    }
+    const calculateTotal=()=>{
+       let total =cartList.reduce((accumulator, currentValue)=>accumulator+(currentValue.price * currentValue.quantity),0)
+       return ( props.currency === '€' ? total+ props.deliveryCost : ((total+ props.deliveryCost) * props.exchangeRate).toFixed(2) + props.currency
+       )
     }
     return (
         <>
@@ -53,16 +58,28 @@ function CartModal(props) {
                                     <tr key={index}>
                                         <td> <div> <h4>{pizza.title}</h4>
                                             <p>{pizza.description} </p></div></td>
-                                        <td><input type="number" min="1" value={pizza.quantity} onChange={(event) =>changeQuantity(pizza.id,event.target.value)}
+                                        <td><input type="number" min="1" value={pizza.quantity} onChange={(event) => changeQuantity(pizza.id, event.target.value)}
                                         /></td>
-                                        <td>{pizza.price}</td>
                                         <td>
-                                            <button type="button" className="btn btn-light" onClick={()=> setCartList(cartList.filter(p=>p.id!==pizza.id))}>remove</button>
+                                            {props.currency === '€' ? pizza.price : (pizza.price * props.exchangeRate).toFixed(2)} {props.currency}</td>
+                                        <td>
+                                            <button type="button" className="btn btn-light" onClick={() => setCartList(cartList.filter(p => p.id !== pizza.id))}>remove</button>
                                         </td>
                                     </tr>
+
                                 ))
 
                                 }
+                                <tr >
+                                    <td colSpan="2"> Delivery Cost</td>
+                                    <td>{props.currency === '€' ? props.deliveryCost : (props.deliveryCost * props.exchangeRate).toFixed(2)} {props.currency}
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td colSpan="2"> Total</td>
+                                    <td>{calculateTotal()} 
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
