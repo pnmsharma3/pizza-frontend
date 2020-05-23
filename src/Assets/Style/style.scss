@@ -119,8 +119,27 @@ a {
 	}
 	
 }
+.modal{
+	.modal-body {
+		padding: 2rem;
+	}
+}
 .modal-content{
 	color: $black;
+}
+.modal-90w {
+    width: 90%;
+    max-width: none!important;
+}
+.modal-footer {
+	padding: 0;
+	border: none;
+	.btn{
+		margin: 0;
+		width: 100%;
+		padding: 0.5rem;
+		border-radius: 0;
+	}
 }
 .btn-link{
 	color: $white;
@@ -130,3 +149,6 @@ a {
 		text-decoration: none !important;
 	}
 }
+th{
+	border-top: 0 !important;
+}  
