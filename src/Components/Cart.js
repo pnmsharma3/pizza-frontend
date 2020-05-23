@@ -49,11 +49,13 @@ const Cart = (props) => {
                 <td colSpan="2"> Delivery Cost</td>
                 <td>{props.currency === '€' ? props.deliveryCost : (props.deliveryCost * props.exchangeRate).toFixed(2)} {props.currency}
                 </td>
+                <td></td>
             </tr>
             <tr >
                 <td colSpan="2"> Total</td>
                 <td>{calculateTotal()}
                 </td>
+                <td></td>
             </tr>
         </tbody>
     </table>

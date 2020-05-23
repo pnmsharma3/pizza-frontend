@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import cart from './../Assets/Images/cart.png'
+import upArrow from './../Assets/Images/up-arrow.png'
+import downArrow from './../Assets/Images/down-arrow.png'
 import { Modal, Button } from 'react-bootstrap';
 import AddessForm from './Address';
 import OrderDetails from './orderDetails';
@@ -8,6 +10,7 @@ function CartModal(props) {
     const [lgShow, setLgShow] = useState(false);
     const [cartList, setCartList] = useState([]);
     const [isCheckout, setIsCheckout] = useState(false);
+    const [hideCart, setHideCart] = useState(false);
     const [address, setAddress] = useState({});
     useEffect(() => {
         setCartList(props.cartList);
@@ -46,11 +49,21 @@ function CartModal(props) {
             >
                 <Modal.Header closeButton>
                     <Modal.Title id="example-modal-sizes-title-lg">
-                        Cart Items
+                        Order
           </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Cart cartList={props.cartList} deliveryCost={props.deliveryCost} currency={props.currency} exchangeRate={props.exchangeRate}/>
+                    < div hidden={hideCart}>
+                    <Cart cartList={props.cartList} deliveryCost={props.deliveryCost} currency={props.currency} exchangeRate={props.exchangeRate} />
+                    </div>
+                    <Button variant="light"
+                    hidden={!isCheckout}
+                    onClick={()=> setHideCart(!hideCart)}
+                    >{hideCart?'Show cart':'Hide cart'}
+                     <img className="icon" src={hideCart?downArrow:upArrow}
+                        ></img>
+                      
+                    </Button>
                     {/* <div className="table-responsive">
                         <table className="table">
                             <thead>
@@ -100,7 +113,7 @@ function CartModal(props) {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="danger" hidden={!!isCheckout} onClick={() => setIsCheckout(true)}>
+                    <Button variant="danger" hidden={!!isCheckout} onClick={() => {setIsCheckout(true) ; setHideCart(true)}}>
                         Checkout
                     </Button>
                     <Button variant="danger" hidden={!isCheckout || !!!Object.keys(address).length} onClick={() => placeOrder()}>
