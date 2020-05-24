@@ -7,7 +7,7 @@ const Menu = (props) => {
     useEffect(() => {
         async function fetchData() {
             const { data } = await axios('/api/pizza-list');
-            setPizzaList(data);
+            setPizzaList(data || []);
         }
         fetchData();
     }, []);
@@ -20,6 +20,7 @@ const Menu = (props) => {
         setSelectedList([...selectedList, pizza]);
         props.addToCart([...selectedList, pizza]);
     }
+    console.log('pizzaList',pizzaList)
 
     return (
 
@@ -30,7 +31,7 @@ const Menu = (props) => {
                     <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
                 </div>
             </div>
-
+{!!pizzaList && !!pizzaList.length && typeof pizzaList ==='object' ?
             <div className="container-wrap">
                 <div className="row ">
                     {pizzaList.map((pizza, index) => (
@@ -54,7 +55,8 @@ const Menu = (props) => {
                     ))}
                 </div>
             </div>
-        </div>
+       
+       :''} </div>
 
     );
 }
