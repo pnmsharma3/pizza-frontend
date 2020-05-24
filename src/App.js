@@ -5,13 +5,16 @@ import Menu from './Components/Menu';
 import Service from './Components/Service'
 import { Button } from 'react-bootstrap';
 import CartModal from './Components/Modal'
+import Alert from './Components/alert'
+const EXCHANGE_URL = 'https://api.exchangeratesapi.io/latest?symbols=USD';
 const deliveryCost = 4;
 function App() {
   const [selectedPizza, setSelectedPizza] = useState([]);
   const [isScroll, setIsScroll] = useState(false)
   const [currency, setCurrency] = useState('€');
   const [exchangeRate, setExchangeRate] = useState(1);
-  const EXCHANGE_URL = 'https://api.exchangeratesapi.io/latest?symbols=USD';
+  const [orderId, setOrderId] = useState(null);
+  const [removedId, setRemovedId] = useState(null);
   const myRef = useRef(null)
   useEffect(() => {
     document.addEventListener("scroll", () => {
@@ -31,6 +34,17 @@ function App() {
     pizzas.map(p => p.quantity = 1)
     setSelectedPizza(pizzas);
   }
+
+  const onSuccessfulOrder=({orderId})=>{
+    setOrderId(orderId);
+    setRemovedId('all');
+  }
+
+  const cartUpdate=(id)=>{
+    setSelectedPizza(selectedPizza.filter(p=>p.id!==id));
+    setRemovedId(id)
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -41,8 +55,11 @@ function App() {
             <div className="text-primary ">Currency:
              <button type="button" className={`btn btn-link ${currency === '€' ? 'active' : ''}`} onClick={()=>setCurrency('€')} >Euro</button>
              |<button type="button" className={`btn btn-link ${currency === '$' ? 'active' : ''}`} onClick={()=>setCurrency('$')} >Dollar</button></div>
-            <CartModal cartList={selectedPizza} deliveryCost={deliveryCost} currency={currency} exchangeRate={exchangeRate}/>
-          </div>
+            {!!selectedPizza.length &&
+                <CartModal cartList={selectedPizza} deliveryCost={deliveryCost} currency={currency} exchangeRate={exchangeRate} onSuccessfulOrder={(data)=>onSuccessfulOrder(data)} 
+            resetCart={(id)=>cartUpdate(id)}/>
+          }
+            </div>
         </nav>
         <article className="banner">
           <h3>Happiness is pizza with lots of cheese</h3>
@@ -53,10 +70,11 @@ function App() {
 
       <Service />
       <section className=" menu-container" ref={myRef} >
-        <Menu addToCart={(pizzas) => cartList(pizzas)} currency={currency} exchangeRate={exchangeRate}/>
+        <Menu addToCart={(pizzas) => cartList(pizzas)} currency={currency} exchangeRate={exchangeRate} removedId={removedId}/>
       </section>
+      {!!orderId && <Alert orderId={orderId}></Alert>}
 
-      <article >
+      <article class="text-center">
         contact us
      </article>
     </div>

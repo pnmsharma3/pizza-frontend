@@ -162,3 +162,10 @@ a {
 th{
 	border-top: 0 !important;
 }  
+.alert {
+	top: 10rem;
+	left: 30%;
+	position: fixed;
+	padding: 3rem;
+    z-index: 9;
+}

@@ -11,6 +11,11 @@ const Menu = (props) => {
         }
         fetchData();
     }, []);
+    useEffect(() => {
+      let newList=props.removedId==='all'?[]:selectedList.filter(p=>p.id!==props.removedId);
+        setSelectedList(newList);
+    }, [props.removedId])
+
     const setSelectedpizza = (pizza) => {
         setSelectedList([...selectedList, pizza]);
         props.addToCart([...selectedList, pizza]);

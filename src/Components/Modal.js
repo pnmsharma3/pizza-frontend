@@ -6,32 +6,24 @@ import { Modal, Button } from 'react-bootstrap';
 import AddessForm from './Address';
 import OrderDetails from './orderDetails';
 import Cart from './Cart';
+import axios from 'axios';
+
 function CartModal(props) {
     const [lgShow, setLgShow] = useState(false);
-    const [cartList, setCartList] = useState([]);
+    const [finalCart, setFinalCart] = useState([]);
     const [isCheckout, setIsCheckout] = useState(false);
     const [hideCart, setHideCart] = useState(false);
     const [address, setAddress] = useState({});
-    useEffect(() => {
-        setCartList(props.cartList);
-    }, [props.cartList])
-    // const changeQuantity = (id, value) => {
-    //     let list = cartList.map(selectedPizza => {
-    //         if (selectedPizza.id === id) {
-    //             selectedPizza.quantity = value
-    //         }
-    //         return selectedPizza;
-    //     })
-    //     setCartList(list);
 
-    // }
-    // const calculateTotal = () => {
-    //     let total = cartList.reduce((accumulator, currentValue) => accumulator + (currentValue.price * currentValue.quantity), 0)
-    //     return (props.currency === '€' ? total + props.deliveryCost : ((total + props.deliveryCost) * props.exchangeRate).toFixed(2) + props.currency
-    //     )
-    // }
-    const placeOrder = () => {
-        console.log('ready to place order')
+    const placeOrder = async () => {
+        var arr2 = finalCart.slice()
+        let cart = arr2.reduce((a, c) => ({ ...a, [c.id]: { 'quantity': c.quantity } }), {})
+        const { data } = await axios.post('/api/order', {
+            cart, address
+        })
+        props.onSuccessfulOrder(data)
+        props.resetCart([]);
+        setLgShow(false);
     }
 
     return (
@@ -53,55 +45,21 @@ function CartModal(props) {
           </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    < div hidden={hideCart}>
-                    <Cart cartList={props.cartList} deliveryCost={props.deliveryCost} currency={props.currency} exchangeRate={props.exchangeRate} />
-                    </div>
                     <Button variant="light"
-                    hidden={!isCheckout}
-                    onClick={()=> setHideCart(!hideCart)}
-                    >{hideCart?'Show cart':'Hide cart'}
-                     <img className="icon" src={hideCart?downArrow:upArrow}
-                        ></img>
-                      
+                        hidden={!isCheckout}
+                        onClick={() => setHideCart(!hideCart)}
+                    >{hideCart ? 'Show cart' : 'Hide cart'}
+                        <img className="icon" src={hideCart ? downArrow : upArrow} />
                     </Button>
-                    {/* <div className="table-responsive">
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">pizza</th>
-                                    <th scope="col" >Quantity</th>
-                                    <th scope="col" >Price</th>
-                                    <th scope="col" ></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {cartList.map((pizza, index) => (
-                                    <tr key={index}>
-                                        <td> <div> <h4>{pizza.title}</h4>
-                                            <p>{pizza.description} </p></div></td>
-                                        <td><input type="number" min="1" value={pizza.quantity} onChange={(event) => changeQuantity(pizza.id, event.target.value)}
-                                        /></td>
-                                        <td>
-                                            {props.currency === '€' ? pizza.price : (pizza.price * props.exchangeRate).toFixed(2)} {props.currency}</td>
-                                        <td>
-                                            <button type="button" className="btn btn-light" onClick={() => setCartList(cartList.filter(p => p.id !== pizza.id))}>remove</button>
-                                        </td>
-                                    </tr>
-                                ))
-                                }
-                                <tr >
-                                    <td colSpan="2"> Delivery Cost</td>
-                                    <td>{props.currency === '€' ? props.deliveryCost : (props.deliveryCost * props.exchangeRate).toFixed(2)} {props.currency}
-                                    </td>
-                                </tr>
-                                <tr >
-                                    <td colSpan="2"> Total</td>
-                                    <td>{calculateTotal()}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div> */}
+                    < div hidden={hideCart}>
+                        <Cart
+                            cartList={props.cartList}
+                            deliveryCost={props.deliveryCost}
+                            currency={props.currency}
+                            exchangeRate={props.exchangeRate}
+                            finalCart={(cart, total) => setFinalCart(cart) } 
+                            cartModified={(id)=>props.resetCart(id)}/>
+                    </div>
 
                     <div hidden={!isCheckout || !!Object.keys(address).length}>
                         <hr />
@@ -113,7 +71,7 @@ function CartModal(props) {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="danger" hidden={!!isCheckout} onClick={() => {setIsCheckout(true) ; setHideCart(true)}}>
+                    <Button variant="danger" hidden={!!isCheckout} onClick={() => { setIsCheckout(true); setHideCart(true) }}>
                         Checkout
                     </Button>
                     <Button variant="danger" hidden={!isCheckout || !!!Object.keys(address).length} onClick={() => placeOrder()}>

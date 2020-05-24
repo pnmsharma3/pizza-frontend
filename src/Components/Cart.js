@@ -18,7 +18,14 @@ const Cart = (props) => {
     const calculateTotal = () => {
         let total = cartList.reduce((accumulator, currentValue) => accumulator + (currentValue.price * currentValue.quantity), 0)
         let formatedTotal=props.currency === '€' ? (total + props.deliveryCost).toFixed(2) : ((total + props.deliveryCost) * props.exchangeRate).toFixed(2) + props.currency;
+        props.finalCart(cartList,formatedTotal)
         return (formatedTotal)
+    }
+    const removePizza=(id)=>{
+        let modifiedCart=cartList.filter(p => p.id !==id);
+        setCartList(modifiedCart)
+         props.cartModified(id)
+
     }
     return (   <div className="table-responsive">
     <table className="table">
@@ -40,7 +47,7 @@ const Cart = (props) => {
                     <td>
                         {props.currency === '€' ? pizza.price : (pizza.price * props.exchangeRate).toFixed(2)} {props.currency}</td>
                     <td>
-                        <button type="button" className="btn btn-light" onClick={() => setCartList(cartList.filter(p => p.id !== pizza.id))}>remove</button>
+                        <button type="button" className="btn btn-light" onClick={() => removePizza(pizza.id) }>remove</button>
                     </td>
                 </tr>
             ))
