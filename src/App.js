@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-
 import './Assets/Style/style.scss';
 import Menu from './Components/Menu';
 import Service from './Components/Service'
@@ -8,6 +7,8 @@ import CartModal from './Components/Modal'
 import Alert from './Components/alert'
 const EXCHANGE_URL = 'https://api.exchangeratesapi.io/latest?symbols=USD';
 const deliveryCost = 4;
+const ApiHost = 'https://still-ocean-87361.herokuapp.com/';
+
 function App() {
   const [selectedPizza, setSelectedPizza] = useState([]);
   const [isScroll, setIsScroll] = useState(false)
@@ -35,13 +36,13 @@ function App() {
     setSelectedPizza(pizzas);
   }
 
-  const onSuccessfulOrder=({orderId})=>{
+  const onSuccessfulOrder = ({ orderId }) => {
     setOrderId(orderId);
     setRemovedId('all');
   }
 
-  const cartUpdate=(id)=>{
-    setSelectedPizza(selectedPizza.filter(p=>p.id!==id));
+  const cartUpdate = (id) => {
+    setSelectedPizza(id!=='all'?selectedPizza.filter(p => p.id !== id):[]);
     setRemovedId(id)
   }
 
@@ -53,13 +54,14 @@ function App() {
             <a className="navbar-brand"><span className="flaticon-pizza-1 mr-1"></span>Pizza <br /><small>Delicous</small>
             </a>
             <div className="text-primary ">Currency:
-             <button type="button" className={`btn btn-link ${currency === '€' ? 'active' : ''}`} onClick={()=>setCurrency('€')} >Euro</button>
-             |<button type="button" className={`btn btn-link ${currency === '$' ? 'active' : ''}`} onClick={()=>setCurrency('$')} >Dollar</button></div>
+             <button type="button" className={`btn btn-link ${currency === '€' ? 'active' : ''}`} onClick={() => setCurrency('€')} >Euro</button>
+             |<button type="button" className={`btn btn-link ${currency === '$' ? 'active' : ''}`} onClick={() => setCurrency('$')} >Dollar</button></div>
             {!!selectedPizza.length &&
-                <CartModal cartList={selectedPizza} deliveryCost={deliveryCost} currency={currency} exchangeRate={exchangeRate} onSuccessfulOrder={(data)=>onSuccessfulOrder(data)} 
-            resetCart={(id)=>cartUpdate(id)}/>
-          }
-            </div>
+              <CartModal cartList={selectedPizza} deliveryCost={deliveryCost} currency={currency} exchangeRate={exchangeRate} onSuccessfulOrder={(data) => onSuccessfulOrder(data)}
+                resetCart={(id) => cartUpdate(id)} 
+                ApiHost={ApiHost}/>
+            }
+          </div>
         </nav>
         <article className="banner">
           <h3>Happiness is pizza with lots of cheese</h3>
@@ -70,7 +72,12 @@ function App() {
 
       <Service />
       <section className=" menu-container" ref={myRef} >
-        <Menu addToCart={(pizzas) => cartList(pizzas)} currency={currency} exchangeRate={exchangeRate} removedId={removedId}/>
+        <Menu
+          addToCart={(pizzas) => cartList(pizzas)}
+           currency={currency}
+            exchangeRate={exchangeRate} 
+            removedId={removedId} 
+            ApiHost={ApiHost}/>
       </section>
       {!!orderId && <Alert orderId={orderId}></Alert>}
 

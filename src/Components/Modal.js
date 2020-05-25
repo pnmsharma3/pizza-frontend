@@ -18,11 +18,11 @@ function CartModal(props) {
     const placeOrder = async () => {
         var arr2 = finalCart.slice()
         let cart = arr2.reduce((a, c) => ({ ...a, [c.id]: { 'quantity': c.quantity } }), {})
-        const { data } = await axios.post('/api/order', {
+        const { data } = await axios.post(`${props.ApiHost}api/order`, {
             cart, address
         })
         props.onSuccessfulOrder(data)
-        props.resetCart([]);
+        props.resetCart('all');
         setLgShow(false);
     }
 

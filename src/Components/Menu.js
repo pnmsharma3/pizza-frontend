@@ -6,7 +6,7 @@ const Menu = (props) => {
     const [selectedList, setSelectedList] = useState([]);
     useEffect(() => {
         async function fetchData() {
-            const { data } = await axios('/api/pizza-list');
+            const { data } = await axios(`${props.ApiHost}api/pizza-list`);
             setPizzaList(data || []);
         }
         fetchData();
@@ -20,8 +20,6 @@ const Menu = (props) => {
         setSelectedList([...selectedList, pizza]);
         props.addToCart([...selectedList, pizza]);
     }
-    console.log('pizzaList',pizzaList)
-
     return (
 
         <div className="container">
