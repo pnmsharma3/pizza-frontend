@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Assets/Style/style.scss';
 import Menu from './Components/Menu';
 import Service from './Components/Service'
+import logo from './Assets/Images/pizza.png'
 import { Button } from 'react-bootstrap';
 import CartModal from './Components/Modal'
 import Alert from './Components/alert'
@@ -17,6 +18,7 @@ function App() {
   const [orderId, setOrderId] = useState(null);
   const [removedId, setRemovedId] = useState(null);
   const myRef = useRef(null)
+
   useEffect(() => {
     document.addEventListener("scroll", () => {
       const scroll = window.scrollY > 100;
@@ -24,10 +26,12 @@ function App() {
         setIsScroll(scroll)
       }
     });
+
     fetch(EXCHANGE_URL).then(res => res.json()).then(data => {
       setExchangeRate(data.rates.USD)
     })
   })
+
   const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop)
   const executeScroll = () => scrollToRef(myRef)
 
@@ -42,7 +46,7 @@ function App() {
   }
 
   const cartUpdate = (id) => {
-    setSelectedPizza(id!=='all'?selectedPizza.filter(p => p.id !== id):[]);
+    setSelectedPizza(id !== 'all' ? selectedPizza.filter(p => p.id !== id) : []);
     setRemovedId(id)
   }
 
@@ -51,15 +55,17 @@ function App() {
       <header className="App-header">
         <nav className={`navbar navbar-expand-lg${!!isScroll ? 'navbar-dark bg-dark' : ''}`}>
           <div className="container">
-            <a className="navbar-brand"><span className="flaticon-pizza-1 mr-1"></span>Pizza <br /><small>Delicous</small>
+            <a className="navbar-brand" href="/">
+              <img className="logo"src={logo}/>
+              {/* <span className="flaticon-pizza-1 mr-1"></span>Pizza <br /><small>Delicous</small> */}
             </a>
             <div className="text-primary ">Currency:
              <button type="button" className={`btn btn-link ${currency === '€' ? 'active' : ''}`} onClick={() => setCurrency('€')} >Euro</button>
              |<button type="button" className={`btn btn-link ${currency === '$' ? 'active' : ''}`} onClick={() => setCurrency('$')} >Dollar</button></div>
             {!!selectedPizza.length &&
               <CartModal cartList={selectedPizza} deliveryCost={deliveryCost} currency={currency} exchangeRate={exchangeRate} onSuccessfulOrder={(data) => onSuccessfulOrder(data)}
-                resetCart={(id) => cartUpdate(id)} 
-                ApiHost={ApiHost}/>
+                resetCart={(id) => cartUpdate(id)}
+                ApiHost={ApiHost} />
             }
           </div>
         </nav>
@@ -74,11 +80,12 @@ function App() {
       <section className=" menu-container" ref={myRef} >
         <Menu
           addToCart={(pizzas) => cartList(pizzas)}
-           currency={currency}
-            exchangeRate={exchangeRate} 
-            removedId={removedId} 
-            ApiHost={ApiHost}/>
+          currency={currency}
+          exchangeRate={exchangeRate}
+          removedId={removedId}
+          ApiHost={ApiHost} />
       </section>
+
       {!!orderId && <Alert orderId={orderId}></Alert>}
 
       <article class="text-center">
