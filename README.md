@@ -1,5 +1,8 @@
 This project is a Online Pizza ordering app powered with react js.
 
+## Heroku Url
+
+https://dashboard.heroku.com/apps/dry-tor-62341
 
 
 ## Available Scripts for Dev
