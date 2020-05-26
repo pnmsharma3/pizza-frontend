@@ -15,7 +15,7 @@ function AlertDismissible({orderId}) {
         </Alert>
       );
     }
-    return <Button onClick={() => setShow(true)}>Show Alert</Button>;
+    return null;
   }
   
   export default AlertDismissible;
